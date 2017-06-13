@@ -9,12 +9,11 @@ class Detail extends React.Component {
             mode: 'commits',
             commits: [],
             forks: [],
-            pulls: [],
+            pulls: []
         };
     }
 
     componentWillMount() {
-
         ajax.get('https://api.github.com/repos/facebook/react/commits')
             .end((error, response) => {
                 if (!error && response) {
@@ -44,7 +43,18 @@ class Detail extends React.Component {
                 }
             }
         );
+    }
 
+    showCommits() {
+        this.setState({ mode: 'commits' });
+    }
+
+    showForks() {
+        this.setState({ mode: 'forks' });
+    }
+
+    showPulls() {
+        this.setState({ mode: 'pulls' });
     }
 
     renderCommits() {
@@ -57,16 +67,18 @@ class Detail extends React.Component {
             </p>);
         });
     }
+
     renderForks() {
         return this.state.forks.map((fork, index) => {
             const owner = fork.owner ? fork.owner.login : 'Anonymous';
 
             return (<p key={index}>
-                <strong>{owner}</strong>: forked to&nbsp;
+                <strong>{owner}</strong>: forked to
                 <a href={fork.html_url}>{fork.html_url}</a> at {fork.created_at}.
             </p>);
         });
     }
+
     renderPulls() {
         return this.state.pulls.map((pull, index) => {
             const user = pull.user ? pull.user.login : 'Anonymous';
@@ -76,16 +88,6 @@ class Detail extends React.Component {
                 <a href={pull.html_url}>{pull.body}</a>.
             </p>);
         });
-    }
-
-    showCommits() {
-        this.setState({ mode: 'commits'});
-    }
-    showForks() {
-        this.setState({ mode: 'forks'});
-    }
-    showPulls() {
-        this.setState({ mode: 'pulls'});
     }
 
     render() {
@@ -102,8 +104,8 @@ class Detail extends React.Component {
         return (<div>
             <button onClick={this.showCommits.bind(this)}>Show Commits</button>
             <button onClick={this.showForks.bind(this)}>Show Forks</button>
-            <button onClick={this.showPulls.bind(this)}>Show Pull Requests</button>
-            { content }
+            <button onClick={this.showPulls.bind(this)}>Show Pulls</button>
+            {content}
         </div>);
     }
 }
